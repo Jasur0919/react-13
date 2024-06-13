@@ -1,0 +1,29 @@
+.sele {
+    width: 300px;
+    height: 30px;
+    margin: 20px 0   ;
+}
+
+.smth {
+    margin: 0 20px !important;
+}
+
+.ali {
+  text-align: center;
+}
+
+.btn button {
+    background: rgb(5, 147, 249);
+    color: white;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    padding: 5px 25px;
+}
+
+@media screen and (max-width: 900px) {
+    .grid_card {
+        grid-template-columns: repeat(3, fr1); 
+    }
+}
+
