@@ -103,9 +103,8 @@
 
 // export default App;
 
-
 import React, { useState } from 'react';
-import { Container, Grid, Paper, TextField, Button, List, ListItem, ListItemText, IconButton, Select, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { TextField, Button, List, ListItem, ListItemText, IconButton, Select, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { FaRegEdit } from "react-icons/fa";
 import { FaTrashAlt } from "react-icons/fa";
 
@@ -128,6 +127,10 @@ const App = () => {
   };
 
   const addTask = () => {
+    if (newTaskTitle.trim() === '') {
+      alert("Ma'lumot kriting");
+      return;
+    }
     setTasks([...tasks, { title: newTaskTitle, status: newTaskStatus }]);
     handleCloseModal();
   };
@@ -145,13 +148,17 @@ const App = () => {
   };
 
   const updateTask = () => {
+    if (newTaskTitle.trim() === '') {
+      alert('Task title is required.');
+      return;
+    }
     const updatedTasks = tasks.map((task, i) => i === editTask ? { title: newTaskTitle, status: newTaskStatus } : task);
     setTasks(updatedTasks);
     handleCloseModal();
   };
 
   return (
-    <Container>
+    <div style={{ padding: '20px' }}>
       <h1>Task Manager</h1>
       <Button variant="contained" color="primary" onClick={handleOpenModal} style={{ marginBottom: '20px' }}>
         Add Task
@@ -166,12 +173,14 @@ const App = () => {
             onChange={(e) => setNewTaskTitle(e.target.value)}
             fullWidth
             margin="dense"
+            required
           />
           <Select
             value={newTaskStatus}
             onChange={(e) => setNewTaskStatus(e.target.value)}
             fullWidth
             margin="dense"
+            required
           >
             {['open', 'pending', 'inprog', 'complete'].map((status) => (
               <MenuItem key={status} value={status}>{status}</MenuItem>
@@ -188,29 +197,27 @@ const App = () => {
         </DialogActions>
       </Dialog>
 
-      <Grid container spacing={3}>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         {['open', 'pending', 'inprog', 'complete'].map((status) => (
-          <Grid item xs={3} key={status}>
-            <Paper elevation={3} style={{ padding: '10px' }}>
-              <h2>{status}</h2>
-              <List>
-                {tasks.filter(task => task.status === status).map((task, index) => (
-                  <ListItem key={index}>
-                    <ListItemText primary={task.title} />
-                    <IconButton edge="end" aria-label="edit" onClick={() => startEditTask(index)}>
-                      <FaRegEdit style={{ color: 'blue' }} />
-                    </IconButton>
-                    <IconButton edge="end" aria-label="delete" onClick={() => deleteTask(index)}>
-                      <FaTrashAlt style={{ color: 'red' }} />
-                    </IconButton>
-                  </ListItem>
-                ))}
-              </List>
-            </Paper>
-          </Grid>
+          <div key={status} style={{ width: '23%', border: '1px solid #ccc', padding: '10px', borderRadius: '5px' }}>
+            <h2>{status}</h2>
+            <List>
+              {tasks.filter(task => task.status === status).map((task, index) => (
+                <ListItem key={index}>
+                  <ListItemText primary={task.title} />
+                  <IconButton edge="end" aria-label="edit" onClick={() => startEditTask(index)}>
+                    <FaRegEdit style={{ color: 'blue' }} />
+                  </IconButton>
+                  <IconButton edge="end" aria-label="delete" onClick={() => deleteTask(index)}>
+                    <FaTrashAlt style={{ color: 'red' }} />
+                  </IconButton>
+                </ListItem>
+              ))}
+            </List>
+          </div>
         ))}
-      </Grid>
-    </Container>
+      </div>
+    </div>
   );
 };
 
